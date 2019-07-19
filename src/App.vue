@@ -3,18 +3,20 @@
     <HelloWorld msg="Full Stack JS Developer"/>
     <div class="container">
       <button class="btn btn-sm" @click="fetchTokens">Fetch API Tokens</button>
-      <button class="btn btn-sm" @click="clearTokens">Clear Tokens</button>
+      <button class="btn btn-sm" @click="clearTodos">Clear Todos</button>
       <table class="table table-dark">
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Token</th>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(api_token, index) in api_tokens" :key="api_token.id">
+          <tr v-for="(todo, index) in todos" :key="todo.id">
             <td>{{ index+1 }}</td>
-            <td>{{ api_token.token }}</td>
+            <td>{{ todo.title }}</td>
+            <td>{{ todo.description }}</td>
           </tr>
         </tbody>
       </table>
@@ -33,16 +35,16 @@ export default {
   },
   data () {
     return {
-      api_tokens: []
+      todos: []
     }
   },
   methods: {
     fetchTokens () {
-      axios.get('http://localhost:3000/api/api_tokens').then(({data}) => this.api_tokens = data)
+      axios.get('http://localhost:3000/api/todos').then(({data}) => this.todos = data)
     },
 
-    clearTokens () {
-      this.api_tokens = []
+    clearTodos () {
+      this.todos = []
     }
   }
 }
