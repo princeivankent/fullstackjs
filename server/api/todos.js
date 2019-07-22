@@ -1,19 +1,26 @@
 const mysql = require('mysql');
-const config = require('../config');
+const config = require('../config/database');
+const connect = mysql.createConnection(config.mysql);
 
-const connect = mysql.createPool(config.mysql);
-const mysqlError = { error: true, message: 'Error executing MySQL query'};
-
-function get (req, res) {
+function getTodos (req, res) {
   var query = mysql.format(`SELECT * FROM todos`);
   connect.query(query, (err, rows) => {
     if (err) 
-      return res.json(mysqlError);
+      return res.json(err);
 
     return res.json(rows);
   });
 }
 
+function getTodo (req, res) {
+  var query = mysql.format('SELECT * FROM todos WHERE id = ?', [req.params.id]);
+  connect.query(query, (err, rows) => {
+    if (err) return res.json(err);
+
+    res.json(rows);
+  });
+}
+
 module.exports = { 
-  get 
+  getTodos, getTodo
 }
